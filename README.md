@@ -7,7 +7,7 @@ and [helm](https://github.com/helm/helm) charts.
 
 # Requirements
 
-- Go and Docker: sudo dnf install go docker-ce (add ~/go/bin to the PATH)
+- Go and Docker: sudo dnf install go docker-ce (add `~/go/bin` directory to the PATH)
 - Kubectl: sudo dnf install kubectl
 - Kind: go install sigs.k8s.io/kind@v0.27.0
 - Helm: sudo dnf install helm
