@@ -24,7 +24,7 @@ These scripts run on Linux, other OSes may not be supported.
 git clone https://github.com/cjmach/kind-cluster.git
 ```
 
-2. Change to kind-cluster directory and create a kubernetes cluster with default options.
+2. Change to `kind-cluster` directory and create a kubernetes cluster with default options.
 
 ```console
 cd kind-cluster
@@ -48,5 +48,5 @@ Append the following line:
 127.0.0.1 kind.example.com
 ```
 
-5. Add your own helmfiles to deploy directory to deploy more apps to the cluster.
+5. Add your own helmfiles to `deploy` directory to deploy more apps to the cluster.
 
