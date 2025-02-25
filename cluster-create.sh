@@ -10,7 +10,7 @@ cluster_name="kind"
 # set CNI, 'kindnet' by default. 'calico' also supported.
 cni="kindnet" # or calico
 # path to kind cluster configuration.
-cluster_config="$(cwd)/cluster/1m1w-${cni}.yaml"
+cluster_config="${cwd}/cluster/1m1w-${cni}.yaml"
 # path to kubeconfig file. 
 kube_config="${HOME}/.kube/config"
 # kindest/node image version.
@@ -20,7 +20,7 @@ calico_version="v3.29.2"
 
 while [ $# -gt 0 ]; do
     case $1 in
-        -f|--force)
+        --force)
             force="true"
             shift
             ;;
@@ -48,6 +48,19 @@ while [ $# -gt 0 ]; do
             kube_config="$2"
             shift
             shift
+            ;;
+        -h|--help)
+            echo "Usage: cluster-create.sh [--force] [-n|--name CLUSTER_NAME] [-f|--file CLUSTER_CONFIG] [-c|--cni CNI(kindnet|calico)] [-i|--image NODE_IMAGE_VERSION] [-k|--kubeconfig CONFIG]"
+            echo
+            echo "Options:"
+            echo -e "--force\t\t\tForce cluster creation if it exists. Default is '${force}'."
+            echo -e "-n,--name\t\tSet the cluster name, '${cluster_name}' by default."
+            echo -e "-f,--file\t\tPath to kind cluster configuration. Default is '${cluster_config}'"
+            echo -e "-c,--cni\t\tSet CNI, '${cni}' by default. 'calico' is also supported."
+            echo -e "-i,--image-version\tVersion of kindest/node image. Default is '${node_version}'."
+            echo -e "-k,--kubeconfig\t\tPath to kubeconfig file. Default is '${kube_config}'."
+            echo -e "-h,--help\t\tShow this message and exit."
+            exit 0
             ;;
         *)
             echo "[ERROR] Unknown option $1" >&2

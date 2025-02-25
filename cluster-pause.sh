@@ -10,6 +10,14 @@ while [ $# -gt 0 ]; do
             shift
             shift
             ;;
+        -h|--help)
+            echo "Usage: cluster-pause.sh [-n|--name CLUSTER_NAME]"
+            echo
+            echo "Options:"
+            echo -e "-n,--name\t\tSet the cluster name, '${cluster_name}' by default."
+            echo -e "-h,--help\t\tShow this message and exit."
+            exit 0
+            ;;
         *)
             echo "[ERROR] Unknown option $1" >&2
             exit 1

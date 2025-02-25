@@ -17,6 +17,15 @@ while [ $# -gt 0 ]; do
             shift
             shift
             ;;
+        -h|--help)
+            echo "Usage: cluster-delete.sh [-n|--name CLUSTER_NAME] [-k|--kubeconfig CONFIG]"
+            echo
+            echo "Options:"
+            echo -e "-n,--name\t\tSet the cluster name, '${cluster_name}' by default."
+            echo -e "-k,--kubeconfig\t\tPath to kubeconfig file. Default is '${kube_config}'."
+            echo -e "-h,--help\t\tShow this message and exit."
+            exit 0
+            ;;
         *)
             echo "[ERROR] Unknown option $1" >&2
             exit 1
