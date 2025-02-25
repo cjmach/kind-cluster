@@ -7,9 +7,9 @@ and [helm](https://github.com/helm/helm) charts.
 
 # Requirements
 
-- Go and Docker: sudo dnf install go docker-ce
+- Go and Docker: sudo dnf install go docker-ce (add ~/go/bin to the PATH)
 - Kubectl: sudo dnf install kubectl
-- Kind: go install sigs.k8s.io/kind@v0.27.0 (add ~/go/bin to the PATH)
+- Kind: go install sigs.k8s.io/kind@v0.27.0
 - Helm: sudo dnf install helm
 - Hell-diff: https://github.com/databus23/helm-diff
 - Helmfile: https://github.com/helmfile/helmfile/releases
