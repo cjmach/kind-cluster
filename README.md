@@ -14,6 +14,8 @@ and [helm](https://github.com/helm/helm) charts.
 - Hell-diff: https://github.com/databus23/helm-diff
 - Helmfile: https://github.com/helmfile/helmfile/releases
 
+These scripts run on Linux, other OSes may not be supported.
+
 # Usage
 
 1. Clone this repository.
@@ -34,12 +36,17 @@ cd kind-cluster
 ```console
 # Deploy Nginx ingress controller and Kubernetes dashboard.
 ./cluster-deploy.sh -f deploy/basic.yaml
-```
 
-```console
 # Deploy Prometheus and Grafana.
 ./cluster-deploy.sh -f deploy/monitoring.yaml
 ```
 
-4. Add your own helmfiles to deploy directory to deploy more apps to the cluster.
+4. Add cluster domain to /etc/hosts (the domain is specified in deploy/values.yaml file). 
+Append the following line:
+
+```
+127.0.0.1 kind.example.com
+```
+
+5. Add your own helmfiles to deploy directory to deploy more apps to the cluster.
 
