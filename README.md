@@ -48,5 +48,11 @@ Append the following line:
 127.0.0.1 kind.example.com
 ```
 
+Access the deployed applications through the following URLs:
+
+- Kubernetes Dashboard: https://kind.example.com/k8s-dashboard
+- Prometheus: https://kind.example.com/prometheus
+- Grafana: https://kind.example.com/grafana
+
 5. Add your own helmfiles to `deploy` directory to deploy more apps to the cluster.
 
