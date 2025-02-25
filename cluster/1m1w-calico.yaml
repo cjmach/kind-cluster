@@ -1,0 +1,25 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  apiServerPort: 6443
+  # see: https://docs.tigera.io/calico/latest/getting-started/kubernetes/kind
+  disableDefaultCNI: true
+  podSubnet: 192.168.0.0/16
+# 1 control plane node and 1 worker
+nodes:
+    # the control plane node config
+  - role: control-plane
+    # the worker
+  - role: worker
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 80
+        # 0.0.0.0 is the current default, which may be a security issue.
+        listenAddress: "127.0.0.1"
+        protocol: TCP
+
+      - containerPort: 30443
+        hostPort: 443
+        listenAddress: "127.0.0.1"
+        protocol: TCP
+

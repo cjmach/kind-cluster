@@ -1,0 +1,52 @@
+repositories:
+  - name: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard/
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx/
+
+helmDefaults:
+  wait: true
+  createNamespace: true
+  historyMax: 5
+  cleanupOnFail: true
+
+releases:
+  - name: ingress-nginx
+    namespace: load-balancing
+    chart: ingress-nginx/ingress-nginx
+    values:
+      - controller:
+          service:
+            type: NodePort
+            nodePorts:
+              http: 30080
+              https: 30443
+
+  - name: metrics-server
+    namespace: kube-system
+    chart: metrics-server/metrics-server
+    values:
+      - args:
+        - --kubelet-preferred-address-types=InternalIP
+        - --kubelet-insecure-tls
+    
+  - name: kubernetes-dashboard
+    namespace: kube-system
+    chart: kubernetes-dashboard/kubernetes-dashboard
+    version: 7.10.4
+    values:
+      - app:
+          ingress:
+            enabled: true
+            hosts:
+              - {{ .Values.cluster.domain }}
+            ingressClassName: nginx
+            path: /k8s-dashboard
+
+  - name: kubernetes-dashboard-cfg
+    namespace: kube-system
+    chart: ../env/charts/kubernetes-dashboard-cfg
+    wait: false
+

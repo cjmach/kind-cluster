@@ -1,0 +1,4 @@
+Access to Kubernetes Dashboard was sucessfully configured.
+Get the user access token by running the following command:
+
+kubectl -n {{ .Release.Namespace }} describe secret $(kubectl -n {{ .Release.Namespace }} get secret | grep {{ include "kubernetes-dashboard-cfg.serviceAccountName" . }} | awk '{print $1}')

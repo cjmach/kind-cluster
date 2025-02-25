@@ -1,0 +1,2 @@
+cluster:
+  domain: kind.example.com

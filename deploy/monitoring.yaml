@@ -1,0 +1,88 @@
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+
+helmDefaults:
+  wait: true
+  createNamespace: true
+  historyMax: 5
+  cleanupOnFail: true
+
+releases:
+  - name: prometheus
+    namespace: monitoring
+    chart: prometheus-community/prometheus
+    values:
+      - server:
+          # see: https://github.com/kubernetes/ingress-nginx/issues/6140#issuecomment-815811168
+          extraArgs:
+            web.route-prefix: "/"
+          baseURL: https://{{ .Values.cluster.domain }}/prometheus
+          ingress:
+            enabled: true
+            hosts:
+              - {{ .Values.cluster.domain }}
+            path: "/prometheus(/|$)(.*)"
+            pathType: ImplementationSpecific
+            annotations:
+              kubernetes.io/ingress.class: nginx
+              nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+
+  - name: grafana
+    namespace: monitoring
+    chart: grafana/grafana
+    values:
+      - grafana.ini:
+          server:
+            domain: {{ .Values.cluster.domain }}
+            root_url: "%(protocol)s://%(domain)s/grafana"
+            serve_from_sub_path: true
+      - ingress:
+          enabled: true
+          hosts:
+              - {{ .Values.cluster.domain }}
+          path: "/grafana"
+          annotations:
+            kubernetes.io/ingress.class: nginx
+      - datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                url: http://prometheus-server.monitoring/
+                access: proxy
+      - dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+              - name: 'basic'
+                orgId: 1
+                folder: 'Basic'
+                type: file
+                disableDeletion: false
+                editable: true
+                options:
+                  path: /var/lib/grafana/dashboards/basic
+                updateIntervalSeconds: 30
+              - name: 'monitoring'
+                orgId: 1
+                folder: 'Monitoring'
+                type: file
+                disableDeletion: false
+                editable: true
+                options:
+                  path: /var/lib/grafana/dashboards/monitoring
+      - dashboards:
+          basic:
+            k8s-cluster:
+              gnetId: 6417
+              revision: 1
+              datasource: Prometheus
+          monitoring:
+            alertmanager:
+              gnetId: 16007
+              revision: 14
+              datasource: Prometheus
