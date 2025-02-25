@@ -22,14 +22,14 @@ and [helm](https://github.com/helm/helm) charts.
 git clone https://github.com/cjmach/kind-cluster.git
 ```
 
-1. Change to kind-cluster directory and create a kubernetes cluster with default options.
+2. Change to kind-cluster directory and create a kubernetes cluster with default options.
 
 ```console
 cd kind-cluster
 ./cluster-create.sh
 ```
 
-1. Deploy applications and services.
+3. Deploy applications and services.
 
 ```console
 # Deploy Nginx ingress controller and Kubernetes dashboard.
@@ -41,5 +41,5 @@ cd kind-cluster
 ./cluster-deploy.sh -f deploy/monitoring.yaml
 ```
 
-1. Add your own helmfiles to deploy directory to deploy more apps to the cluster.
+4. Add your own helmfiles to deploy directory to deploy more apps to the cluster.
 
