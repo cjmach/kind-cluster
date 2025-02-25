@@ -41,7 +41,7 @@ cd kind-cluster
 ./cluster-deploy.sh -f deploy/monitoring.yaml
 ```
 
-4. Add cluster domain to /etc/hosts (the domain is specified in deploy/values.yaml file). 
+4. Add cluster domain to `/etc/hosts` (the domain is specified in `deploy/values.yaml` file). 
 Append the following line:
 
 ```
