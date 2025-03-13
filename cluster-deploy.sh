@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # current working directory
-cwd=$(dirname ${BASH_SOURCE})
+cwd=$(dirname -- "$(readlink -f -- "${BASH_SOURCE}")")
 
 # path to kubeconfig file. 
 kube_config="${HOME}/.kube/config"
 # path to helmfile file. 
-helmfile_config="$(cwd)/deploy/basic.yaml"
+helmfile_config="${cwd}/deploy/basic.yaml"
 # Values to be injected in helmfile
 values_file="${cwd}/deploy/values.yaml"
 

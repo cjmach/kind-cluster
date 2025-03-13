@@ -16,20 +16,54 @@ releases:
     chart: prometheus-community/prometheus
     values:
       - server:
+          securityContext:
+            runAsUser: 65534
+            runAsNonRoot: false
+            runAsGroup: 65534
+            fsGroup: 65534
           # see: https://github.com/kubernetes/ingress-nginx/issues/6140#issuecomment-815811168
           extraArgs:
             web.route-prefix: "/"
           baseURL: https://{{ .Values.cluster.domain }}/prometheus
           ingress:
             enabled: true
+            ingressClassName: nginx
             hosts:
               - {{ .Values.cluster.domain }}
             path: "/prometheus(/|$)(.*)"
             pathType: ImplementationSpecific
             annotations:
-              kubernetes.io/ingress.class: nginx
               nginx.ingress.kubernetes.io/rewrite-target: "/$2"
-
+          persistentVolume:
+            enabled: true
+            volumeName: prometheus-pv
+          extraInitContainers:
+            - name: chown-pvc
+              image: busybox
+              command: ["/bin/sh"]
+              args: ["-c", "chown 65534: /data"]
+              volumeMounts:
+                - name:  storage-volume
+                  mountPath: "/data"
+              securityContext:
+                allowPrivilegeEscalation: true
+                runAsUser: 0
+                runAsGroup: 0
+      - extraManifests:
+          - |
+            apiVersion: v1
+            kind: PersistentVolume
+            metadata:
+              name: prometheus-pv
+            spec:
+              storageClassName: standard
+              capacity:
+                storage: 8Gi
+              accessModes:
+                - ReadWriteOnce
+              hostPath:
+                path: {{ .Values.extraMounts.containerPath }}/prometheus-server
+              
   - name: grafana
     namespace: monitoring
     chart: grafana/grafana
@@ -41,11 +75,10 @@ releases:
             serve_from_sub_path: true
       - ingress:
           enabled: true
+          ingressClassName: nginx
           hosts:
               - {{ .Values.cluster.domain }}
           path: "/grafana"
-          annotations:
-            kubernetes.io/ingress.class: nginx
       - datasources:
           datasources.yaml:
             apiVersion: 1

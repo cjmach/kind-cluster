@@ -19,3 +19,7 @@ nodes:
         hostPort: 443
         listenAddress: "127.0.0.1"
         protocol: TCP
+    extraMounts:
+      # relative to cluster-deploy.sh script.
+      - hostPath: ./deploy/volumes
+        containerPath: /mnt/pv

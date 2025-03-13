@@ -47,6 +47,6 @@ releases:
 
   - name: kubernetes-dashboard-cfg
     namespace: kube-system
-    chart: ../env/charts/kubernetes-dashboard-cfg
+    chart: ../deploy/charts/kubernetes-dashboard-cfg
     wait: false
 

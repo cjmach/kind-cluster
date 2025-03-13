@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # current working directory
-cwd=$(dirname ${BASH_SOURCE})
+cwd=$(dirname -- "$(readlink -f -- "${BASH_SOURCE}")")
 
 # force cluster creation if it exists.
 force="false"

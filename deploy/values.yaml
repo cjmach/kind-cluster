@@ -1,2 +1,4 @@
 cluster:
   domain: kind.example.com
+extraMounts:
+  containerPath: /mnt/pv
