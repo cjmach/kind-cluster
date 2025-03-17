@@ -1,0 +1,39 @@
+repositories:
+  - name: elastic
+    url: https://helm.elastic.co
+
+helmDefaults:
+  wait: true
+  createNamespace: true
+  historyMax: 3
+  cleanupOnFail: true
+
+releases:
+  - name: elasticsearch
+    namespace: logging
+    chart: elastic/elasticsearch
+    values:
+      - replicas: 1
+      - minimumMasterNodes: 1
+      - antiAffinity: "soft"
+      - secret:
+          password: password
+
+  - name: kibana
+    namespace: logging
+    chart: elastic/kibana
+    needs:
+      - elasticsearch
+    values:
+      - kibanaConfig:
+          kibana.yml: |
+            server.basePath: /kibana
+            server.rewriteBasePath: true
+      - healthCheckPath: "/kibana/login"
+      - ingress:
+          enabled: true
+          pathtype: Prefix
+          hosts:
+            - host: {{ .Values.cluster.domain }}
+              paths:
+                - path: /kibana
