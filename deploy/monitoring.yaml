@@ -7,7 +7,7 @@ repositories:
 helmDefaults:
   wait: true
   createNamespace: true
-  historyMax: 5
+  historyMax: 3
   cleanupOnFail: true
 
 releases:
@@ -36,7 +36,6 @@ releases:
               nginx.ingress.kubernetes.io/rewrite-target: "/$2"
           persistentVolume:
             enabled: true
-            volumeName: prometheus-pv
           extraInitContainers:
             - name: chown-pvc
               image: busybox
@@ -49,21 +48,7 @@ releases:
                 allowPrivilegeEscalation: true
                 runAsUser: 0
                 runAsGroup: 0
-      - extraManifests:
-          - |
-            apiVersion: v1
-            kind: PersistentVolume
-            metadata:
-              name: prometheus-pv
-            spec:
-              storageClassName: standard
-              capacity:
-                storage: 8Gi
-              accessModes:
-                - ReadWriteOnce
-              hostPath:
-                path: {{ .Values.extraMounts.containerPath }}/prometheus-server
-              
+
   - name: grafana
     namespace: monitoring
     chart: grafana/grafana

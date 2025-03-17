@@ -8,7 +8,7 @@ kube_config="${HOME}/.kube/config"
 # path to helmfile file. 
 helmfile_config="${cwd}/deploy/basic.yaml"
 # Values to be injected in helmfile
-values_file="${cwd}/deploy/values.yaml"
+values_file="${cwd}/deploy/values-kind.yaml"
 
 while [[ $# -gt 0 ]]; do
     case $1 in

@@ -9,7 +9,7 @@ repositories:
 helmDefaults:
   wait: true
   createNamespace: true
-  historyMax: 5
+  historyMax: 3
   cleanupOnFail: true
 
 releases:
@@ -36,6 +36,8 @@ releases:
     namespace: kube-system
     chart: kubernetes-dashboard/kubernetes-dashboard
     version: 7.10.4
+    needs:
+      - kubernetes-dashboard-cfg
     values:
       - app:
           ingress:
@@ -48,5 +50,3 @@ releases:
   - name: kubernetes-dashboard-cfg
     namespace: kube-system
     chart: ../deploy/charts/kubernetes-dashboard-cfg
-    wait: false
-
